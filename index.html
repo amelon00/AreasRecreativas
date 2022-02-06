@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        #map {
+            width: 988px;
+            height: 511px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.wms.js"></script>
+        <script src="data/LENCIDA_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[42.15882621717232,-7.783917231034021],[43.782476250676226,-3.485025458130408]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_FondoMapasrasterdelIGN_0');
+        map.getPane('pane_FondoMapasrasterdelIGN_0').style.zIndex = 400;
+        var layer_FondoMapasrasterdelIGN_0 = L.WMS.layer("https://www.ign.es/wms-inspire/mapa-raster", "mtn_rasterizado", {
+            pane: 'pane_FondoMapasrasterdelIGN_0',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_FondoMapasrasterdelIGN_0);
+        map.createPane('pane_Ortoimagen_1');
+        map.getPane('pane_Ortoimagen_1').style.zIndex = 401;
+        var layer_Ortoimagen_1 = L.WMS.layer("https://www.ign.es/wms-inspire/pnoa-ma", "OI.OrthoimageCoverage", {
+            pane: 'pane_Ortoimagen_1',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Ortoimagen_1);
+        function pop_LENCIDA_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Denominación del Área Recreativa'] !== null ? autolinker.link(feature.properties['Denominación del Área Recreativa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['E. M.'] !== null ? autolinker.link(feature.properties['E. M.'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Témino Municipal'] !== null ? autolinker.link(feature.properties['Témino Municipal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Comarca'] !== null ? autolinker.link(feature.properties['Comarca'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitud'] !== null ? autolinker.link(feature.properties['Longitud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitud'] !== null ? autolinker.link(feature.properties['Latitud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Tipo'] !== null ? autolinker.link(feature.properties['Tipo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Superficie'] !== null ? autolinker.link(feature.properties['Superficie'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Pendiente'] !== null ? autolinker.link(feature.properties['Pendiente'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Exposición'] !== null ? autolinker.link(feature.properties['Exposición'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Municipio cercano'] !== null ? autolinker.link(feature.properties['Municipio cercano'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Distancia'] !== null ? autolinker.link(feature.properties['Distancia'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Accesos'] !== null ? autolinker.link(feature.properties['Accesos'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Si Aparcamiento'] !== null ? autolinker.link(feature.properties['Si Aparcamiento'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Superficie aparcamiento'] !== null ? autolinker.link(feature.properties['Superficie aparcamiento'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nº de mesas'] !== null ? autolinker.link(feature.properties['Nº de mesas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Fuentes'] !== null ? autolinker.link(feature.properties['Fuentes'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Piscina'] !== null ? autolinker.link(feature.properties['Piscina'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Zonas baño'] !== null ? autolinker.link(feature.properties['Zonas baño'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Zona juegos'] !== null ? autolinker.link(feature.properties['Zona juegos'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Otras'] !== null ? autolinker.link(feature.properties['Otras'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Reserva etc'] !== null ? autolinker.link(feature.properties['Reserva etc'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Mantenimiento'] !== null ? autolinker.link(feature.properties['Mantenimiento'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_LENCIDA_2_0(feature) {
+            switch(String(feature.properties['Si Aparcamiento'])) {
+                case 'NO':
+                    return {
+                pane: 'pane_LENCIDA_2',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(128,17,25,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SI':
+                    return {
+                pane: 'pane_LENCIDA_2',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(61,128,53,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,176,74,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_LENCIDA_2',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,123,182,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_LENCIDA_2');
+        map.getPane('pane_LENCIDA_2').style.zIndex = 402;
+        map.getPane('pane_LENCIDA_2').style['mix-blend-mode'] = 'normal';
+        var layer_LENCIDA_2 = new L.geoJson(json_LENCIDA_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_LENCIDA_2',
+            layerName: 'layer_LENCIDA_2',
+            pane: 'pane_LENCIDA_2',
+            onEachFeature: pop_LENCIDA_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_LENCIDA_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_LENCIDA_2);
+        map.addLayer(layer_LENCIDA_2);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'LEÓN-CIDA<br /><table><tr><td style="text-align: center;"><img src="legend/LENCIDA_2_NO0.png" /></td><td>NO</td></tr><tr><td style="text-align: center;"><img src="legend/LENCIDA_2_SI1.png" /></td><td>SI</td></tr><tr><td style="text-align: center;"><img src="legend/LENCIDA_2_2.png" /></td><td></td></tr></table>': layer_LENCIDA_2,"Ortoimagen": layer_Ortoimagen_1,"Fondo/Mapas raster del IGN": layer_FondoMapasrasterdelIGN_0,}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
